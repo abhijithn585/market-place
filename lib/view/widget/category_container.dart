@@ -1,0 +1,19 @@
+import 'package:flutter/material.dart';
+
+class CategoryContainer extends StatelessWidget {
+   CategoryContainer({required this.name,required this.image,super.key});
+  String image;
+  String name;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: 45,
+          child: Image.asset(image),
+        ),
+        Text(name)
+      ],
+    );
+  }
+}
