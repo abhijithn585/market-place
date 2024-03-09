@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:market_place/view/favoraits_page.dart';
-import 'package:market_place/view/listing_page.dart';
-import 'package:market_place/view/profile_editing_page.dart';
-import 'package:market_place/view/sold_page.dart';
+import 'package:market_place/view/favoraits_page/favoraits_page.dart';
+import 'package:market_place/view/listing_page/listing_page.dart';
+import 'package:market_place/view/profile_editing/profile_editing_page.dart';
+import 'package:market_place/view/sold_page/sold_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:market_place/view/register_page.dart';
-import 'package:market_place/view/widget/bottomnavbar.dart';
 import 'package:market_place/view/widget/custom_text_field.dart';
-import 'package:market_place/view/widget/navigation_bar.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
+class PhoneAuthenticationPage extends StatelessWidget {
+  PhoneAuthenticationPage({super.key});
+  late TextEditingController numberController;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,29 +22,23 @@ class LoginPage extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            CustomTextField(hintText: "Enter your email", icons: Icons.email),
+            CustomTextField(
+              icons: Icons.person,
+              hintText: 'Number',
+              controller: numberController,
+            ),
             const SizedBox(
               height: 20,
             ),
-            CustomTextField(hintText: 'Enter your password', icons: Icons.key),
-            const SizedBox(
-              height: 50,
-            ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Bottom(),
-                    ));
-              },
+              onPressed: () {},
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(const Color(0xFF1E232C)),
                 fixedSize: MaterialStateProperty.all<Size>(const Size(200, 60)),
               ),
               child: const Text(
-                "Login",
+                "Agree and Register",
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -97,28 +88,6 @@ class LoginPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Don’t have an account?"),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPage(),
-                        ));
-                  },
-                  child: const Text(
-                    " Register Now",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CategoryContainer extends StatelessWidget {
-   CategoryContainer({required this.name,required this.image,super.key});
+  CategoryContainer({required this.name, required this.image, super.key});
   String image;
   String name;
   @override

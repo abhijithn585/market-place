@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  CustomTextField({required this.icons, required this.hintText, super.key});
+  CustomTextField({required this.icons, required this.hintText,required this.controller, super.key});
   final String hintText;
   final IconData icons;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderSide: BorderSide.none,

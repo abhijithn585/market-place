@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:market_place/view/chat_room_page.dart';
+import 'package:market_place/view/chat_room_page/chat_room_page.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage({super.key});
