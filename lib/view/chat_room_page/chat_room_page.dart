@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ChatRoomPage extends StatefulWidget {
-  ChatRoomPage({super.key});
+  const ChatRoomPage({super.key});
   @override
   State<ChatRoomPage> createState() => _ChatPageRoomState();
 }
@@ -24,8 +24,8 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
+                const Padding(
+                  padding: EdgeInsets.all(20),
                   child: Column(
                     children: [
                       SizedBox(
@@ -35,12 +35,12 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
                           backgroundImage: AssetImage("images/profile.jpg"),
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 10,
                       ),
                       Text(
                         "Jassim",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -64,7 +64,7 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
                       const SizedBox(
                         width: 5,
                       ),
-                      CircleAvatar(
+                      const CircleAvatar(
                         backgroundImage: AssetImage("images/profile.jpg"),
                       )
                     ],

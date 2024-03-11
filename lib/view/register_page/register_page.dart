@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
+import 'package:market_place/view/widget/bottom_nav_bar.dart';
 import 'package:market_place/view/widget/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +19,17 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   @override
+  void dispose() {
+    userNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
@@ -68,7 +76,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  signUpWithEmail(context);
+                },
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(const Color(0xFF1E232C)),
@@ -126,6 +136,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 70),
+                child: Row(
+                  children: [
+                    const Text("You Alrready have account "),
+                    GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(color: Colors.blue),
+                        ))
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -133,12 +157,19 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void signUp() async {
-    final signUpservice = Provider.of<AuthProviders>(context, listen: false);
-    String name = userNameController.text;
-    String email = emailController.text;
-    String password = passwordController.text;
-    String confirmPassword = confirmPasswordController.text;
-    User? user = await signUpservice.signUpWithEmail(email, password, name);
+  signUpWithEmail(BuildContext context) {
+    final signUpService = Provider.of<AuthProviders>(context, listen: false);
+    if (passwordController.text == confirmPasswordController.text) {
+      signUpService.signUpWithEmail(emailController.text,
+          passwordController.text, userNameController.text);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavBar(),
+          ));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Password Don't Match")));
+    }
   }
 }

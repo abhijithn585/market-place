@@ -1,5 +1,4 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:market_place/view/adding_page/adding_page.dart';
 import 'package:market_place/view/chat_page/chat_page.dart';
@@ -23,11 +22,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   final List<Widget> _pages = [
-    HomePage(),
-    FavoraitsPage(),
-    AddingPage(),
-    ChatPage(),
-    ProfilePage()
+    const HomePage(),
+    const FavoraitsPage(),
+    const AddingPage(),
+    const ChatPage(),
+    const ProfilePage()
   ];
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.red,
-        items: [
+        items: const [
           Icon(Icons.home),
           Icon(Icons.favorite_border),
           Icon(Icons.add_circle_outline_sharp),

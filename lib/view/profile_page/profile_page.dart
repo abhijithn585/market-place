@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:market_place/view/favoraits_page/favoraits_page.dart';
+import 'package:market_place/controller/auth_provider.dart';
+import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/view/listing_page/listing_page.dart';
 import 'package:market_place/view/profile_editing/profile_editing_page.dart';
 import 'package:market_place/view/sold_page/sold_page.dart';
+import 'package:market_place/view/widget/custom_buttons.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,19 +16,28 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<FirestoreProvider>(context, listen: false).fetchCurrentUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final pro = Provider.of<FirestoreProvider>(context, listen: true);
+    final authpro = Provider.of<AuthProviders>(context, listen: true);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 55),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 200,
-                  width: 170,
+                SizedBox(
+                  height: 150,
+                  width: 130,
                   child: CircleAvatar(
                     backgroundImage: AssetImage("images/profile.jpg"),
                   ),
@@ -35,105 +45,42 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             Text(
-              "David",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              pro.currentUser ?? 'username',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileEditingPage(),
-                    ));
-              },
-              child: Text(
-                "     Edit Profile      ",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-              ),
+            const SizedBox(
+              height: 20,
             ),
-            SizedBox(
-              height: 5,
+            const CustomButtons(
+              text: 'Edit Profile',
+              navigateToPage: ProfileEditingPage(),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ListingPage(),
-                    ));
-              },
-              child: Container(
-                height: 70,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(244, 224, 224, 224),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [Icon(Icons.label), Text("1 Listing")],
-                  ),
-                ),
-              ),
+            const CustomButtons(
+              text: 'Listings',
+              navigateToPage: ListingPage(),
             ),
-            SizedBox(
-              height: 10,
+            const CustomButtons(
+              text: 'Sold Items',
+              navigateToPage: SoldPage(),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SoldPage(),
-                    ));
-              },
-              child: Container(
-                height: 70,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(244, 224, 224, 224),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.shopping_bag),
-                      Text(
-                        "1 Sold",
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SoldPage(),
-                    ));
-              },
-              child: Container(
-                height: 70,
-                width: 100,
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(244, 224, 224, 224),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.logout),
-                      Text(
-                        "Log Out",
-                      )
-                    ],
-                  ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  authpro.signOut();
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Log Out',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: Colors.black54,
+                    )
+                  ],
                 ),
               ),
             )

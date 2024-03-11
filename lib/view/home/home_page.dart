@@ -1,12 +1,11 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:market_place/constants/data_list.dart';
+import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/view/details_page/detials_page.dart';
 import 'package:market_place/view/widget/category_container.dart';
 import 'package:market_place/view/widget/custom_text_field.dart';
 import 'package:market_place/view/widget/heading_text.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late TextEditingController searchController;
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,22 +39,25 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
+                      const Column(
                         children: [
-                          const Text(
+                          Text(
                             'Location',
                             style: TextStyle(fontSize: 10),
                           ),
-                          Container(
-                            child: const Text(
-                              "Calicut",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
+                          Text(
+                            "Calicut",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
-                      const Icon(Icons.person)
+                      Consumer<AuthProviders>(
+                          builder: (context, value, child) => IconButton(
+                              onPressed: () {
+                                value.signOut();
+                              },
+                              icon: const Icon(Icons.logout)))
                     ],
                   ),
                   const SizedBox(

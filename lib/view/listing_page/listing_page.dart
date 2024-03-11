@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ListingPage extends StatefulWidget {
@@ -32,12 +31,12 @@ class _ListingPageState extends State<ListingPage> {
                         "images/BMW_M3_Competition_(G80)_IMG_4041.jpg",
                         fit: BoxFit.cover,
                       ),
-                      Text(
+                      const Text(
                         "MackBook Air 2023 model",
                         style: TextStyle(fontSize: 13),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

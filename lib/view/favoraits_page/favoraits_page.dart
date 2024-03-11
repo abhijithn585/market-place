@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FavoraitsPage extends StatefulWidget {
@@ -31,12 +30,12 @@ class _FavoraitsPageState extends State<FavoraitsPage> {
                         "images/bmw rr.webp",
                         fit: BoxFit.cover,
                       ),
-                      Text(
+                      const Text(
                         "BMW RR1000 2023 model",
                         style: TextStyle(fontSize: 13),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -51,7 +50,7 @@ class _FavoraitsPageState extends State<FavoraitsPage> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Container(
@@ -67,12 +66,12 @@ class _FavoraitsPageState extends State<FavoraitsPage> {
                         "images/navy-blue-sport-sedan-road-side-view.jpg",
                         fit: BoxFit.cover,
                       ),
-                      Text(
+                      const Text(
                         "MackBook Air 2023 model",
                         style: TextStyle(fontSize: 13),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

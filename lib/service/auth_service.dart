@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:market_place/model/user-model.dart';
+import 'package:market_place/model/user_model.dart';
 
 class AuthService {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  Future<User?> signUpWithEmailAndPassword(
+   signUpWithEmailAndPassword(
     String name,
     String email,
     String password,
@@ -16,19 +16,18 @@ class AuthService {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       final UserModel userData =
-          UserModel(name: name, email: email, uid: userCredential.user!.uid);
+          UserModel(name: name, email: email, uid: userCredential.user?.uid);
       firestore
           .collection('user')
-          .doc(userCredential.user!.uid)
+          .doc(userCredential.user?.uid)
           .set(userData.toJson());
       return userCredential.user;
     } catch (e) {
       print('some error');
     }
-    return null;
   }
 
-  Future<User?> signInWithEmailAndPassword(
+  signInWithEmailAndPassword(
       String email, String password, context) async {
     try {
       UserCredential userCredential = await firebaseAuth
@@ -48,7 +47,6 @@ class AuthService {
       }
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(errorcode)));
-      return null;
     }
   }
 
@@ -71,6 +69,7 @@ class AuthService {
       throw Exception(e.code);
     }
   }
+
   //   void signInWithPhone(
   //     String phonenumber, context, String name, String email) async {
   //   try {
@@ -108,7 +107,7 @@ class AuthService {
   //     throw Exception(e);
   //   }
   // }
-signInWithGithub(context) async {
+  signInWithGithub(context) async {
     GithubAuthProvider githubAuthProvider = GithubAuthProvider();
     try {
       UserCredential user =
@@ -116,7 +115,7 @@ signInWithGithub(context) async {
       User gituser = user.user!;
       final UserModel userdata = UserModel(
           email: gituser.email, name: gituser.displayName, uid: gituser.uid);
-      firestore.collection("users").doc(gituser.uid).set(userdata.toJson());
+      firestore.collection("user").doc(gituser.uid).set(userdata.toJson());
       return user;
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -125,7 +124,7 @@ signInWithGithub(context) async {
     }
   }
 
-  Future<void> signout() async {
+   signout() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       await firebaseAuth.signOut();

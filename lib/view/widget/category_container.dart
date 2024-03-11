@@ -9,7 +9,7 @@ class CategoryContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: 45,
           child: Image.asset(image),
         ),
