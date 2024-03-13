@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
+import 'package:market_place/view/login_page/phone_auth_page.dart';
 import 'package:market_place/view/phone_authentication/phone_authentication.dart';
 import 'package:market_place/view/register_page/register_page.dart';
 import 'package:market_place/view/widget/bottom_nav_bar.dart';
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PhoneAuthenticationPage(),
+                                builder: (context) => PhoneAuthPage(),
                               ));
                         },
                         icon: const Icon(FontAwesomeIcons.phone)),

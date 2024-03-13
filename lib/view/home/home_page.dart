@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:market_place/constants/data_list.dart';
 import 'package:market_place/controller/auth_provider.dart';
+import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/view/details_page/detials_page.dart';
 import 'package:market_place/view/widget/category_container.dart';
 import 'package:market_place/view/widget/custom_text_field.dart';
@@ -15,6 +16,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<FirestoreProvider>(context, listen: false).fetchCurrentUser();
+  }
+
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -85,29 +92,33 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  CategoryContainer(name: "Car", image: "images/car.png"),
+                  CategoryContainer(
+                      name: "Car", image: "assets/images/car.png"),
                   const SizedBox(
                     width: 25,
                   ),
                   CategoryContainer(
-                      name: "Property", image: "images/house.png"),
-                  const SizedBox(
-                    width: 25,
-                  ),
-                  CategoryContainer(name: "Mobile", image: "images/phone.png"),
-                  const SizedBox(
-                    width: 25,
-                  ),
-                  CategoryContainer(name: "Bike", image: "images/bike.png"),
+                      name: "Property", image: "assets/images/house.png"),
                   const SizedBox(
                     width: 25,
                   ),
                   CategoryContainer(
-                      name: "furniture", image: "images/furniture.png"),
+                      name: "Mobile", image: "assets/images/phone.png"),
                   const SizedBox(
                     width: 25,
                   ),
-                  CategoryContainer(name: "Laptop", image: "images/laptop.png")
+                  CategoryContainer(
+                      name: "Bike", image: "assets/images/bike.png"),
+                  const SizedBox(
+                    width: 25,
+                  ),
+                  CategoryContainer(
+                      name: "furniture", image: "assets/images/furniture.png"),
+                  const SizedBox(
+                    width: 25,
+                  ),
+                  CategoryContainer(
+                      name: "Laptop", image: "assets/images/laptop.png")
                 ],
               ),
             ),

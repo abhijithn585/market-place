@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
+import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/firebase_options.dart';
 import 'package:market_place/view/auth_gate.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +21,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => ImageProviders(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => AuthProviders(),
         ),
-        ChangeNotifierProvider(create: (context) => FirestoreProvider(),)
+        ChangeNotifierProvider(
+          create: (context) => FirestoreProvider(),
+        )
       ],
       child: const MaterialApp(
           debugShowCheckedModeBanner: false, home: AuthGate()),

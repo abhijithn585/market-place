@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
+import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/view/listing_page/listing_page.dart';
 import 'package:market_place/view/profile_editing/profile_editing_page.dart';
 import 'package:market_place/view/sold_page/sold_page.dart';
@@ -32,28 +33,40 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 150,
-                  width: 130,
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage("images/profile.jpg"),
+                Center(
+                  child: Consumer<FirestoreProvider>(
+                    builder: (context, value, child) => Container(
+                      width: 100,
+                      height: 150,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: value.currentUser?.image != null
+                                  ? NetworkImage(value.currentUser!.image!)
+                                  : const AssetImage(
+                                          "assets/images/profile.jpg")
+                                      as ImageProvider,
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(15)),
+                    ),
                   ),
                 ),
               ],
             ),
             Text(
-              pro.currentUser ?? 'username',
+              pro.currentUser?.name ?? "Not Available",
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             const SizedBox(
               height: 20,
             ),
-            const CustomButtons(
+            CustomButtons(
               text: 'Edit Profile',
-              navigateToPage: ProfileEditingPage(),
+              navigateToPage: ProfileEditingPage(
+                currentUser: pro.currentUser,
+              ),
             ),
             const CustomButtons(
               text: 'Listings',

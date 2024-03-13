@@ -3,11 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:market_place/model/user_model.dart';
+import 'package:market_place/view/login_page/otp_page.dart';
 
 class AuthService {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-   signUpWithEmailAndPassword(
+  signUpWithEmailAndPassword(
     String name,
     String email,
     String password,
@@ -27,8 +28,7 @@ class AuthService {
     }
   }
 
-  signInWithEmailAndPassword(
-      String email, String password, context) async {
+  signInWithEmailAndPassword(String email, String password, context) async {
     try {
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
@@ -70,43 +70,54 @@ class AuthService {
     }
   }
 
-  //   void signInWithPhone(
-  //     String phonenumber, context, String name, String email) async {
-  //   try {
-  //     await firebaseAuth.verifyPhoneNumber(
-  //       phoneNumber: phonenumber,
-  //       verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
-  //         var cred =
-  //             await firebaseAuth.signInWithCredential(phoneAuthCredential);
-  //         final UserModel userdata = UserModel(
-  //             name: name,
-  //             email: email,
-  //             uid: cred.user!.uid,
-  //             phonenumber: cred.user!.phoneNumber);
-  //         firestore
-  //             .collection('users')
-  //             .doc(cred.user!.uid)
-  //             .set(userdata.toJson());
-  //       },
-  //       verificationFailed: (error) {
-  //         throw Exception(error.message);
-  //       },
-  //       codeSent: ((verificationId, resendToken) {
-  //         showDialog(
-  //           context: context,
-  //           builder: (context) {
-  //             return CustomAlertDialog(
-  //               veridicationId: verificationId,
-  //             );
-  //           },
-  //         );
-  //       }),
-  //       codeAutoRetrievalTimeout: (verificationId) {},
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     throw Exception(e);
-  //   }
-  // }
+  signInWithPhone(String phonenumber, String name, String email,
+      BuildContext context) async {
+    try {
+      await firebaseAuth.verifyPhoneNumber(
+          phoneNumber: phonenumber,
+          verificationCompleted:
+              (PhoneAuthCredential phoneAuthCredential) async {},
+          verificationFailed: (FirebaseAuthException error) {
+            throw Exception(error.message);
+          },
+          codeSent: (verificationcode, resendToken) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OtpScreen(
+                      verificationid: verificationcode,
+                      email: email,
+                      name: name),
+                ));
+          },
+          codeAutoRetrievalTimeout: (String codeAutoRetrievalTimeout) {});
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  verifyOtp(
+      {required String verificationid,
+      required String otp,
+      required String name,
+      required String email,
+      required Function onSuccess}) async {
+    try {
+      PhoneAuthCredential cred = PhoneAuthProvider.credential(
+          verificationId: verificationid, smsCode: otp);
+      User? user = (await firebaseAuth.signInWithCredential(cred)).user;
+
+      if (user != null) {
+        final UserModel userdata =
+            UserModel(email: email, name: name, uid: user.uid);
+        firestore.collection('user').doc(user.uid).set(userdata.toJson());
+        onSuccess();
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   signInWithGithub(context) async {
     GithubAuthProvider githubAuthProvider = GithubAuthProvider();
     try {
@@ -124,7 +135,7 @@ class AuthService {
     }
   }
 
-   signout() async {
+  signout() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       await firebaseAuth.signOut();
