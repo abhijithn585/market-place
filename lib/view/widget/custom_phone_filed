@@ -1,47 +1,32 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 
 class CustomPhoneField extends StatelessWidget {
-  CustomPhoneField({super.key, required this.phonecontroller});
-
-  final Country selectedcountry = Country(
-      phoneCode: "+91",
-      countryCode: "IN",
-      e164Sc: 0,
-      geographic: true,
-      level: 1,
-      name: "India",
-      example: "India",
-      displayName: "India",
-      displayNameNoCountryCode: "IN",
-      e164Key: "");
+  const CustomPhoneField(
+      {super.key,  this.phonecontroller});
 
   final TextEditingController phonecontroller;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: phonecontroller,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-          hintText: "enter your phone number",
-          border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
+    return Padding(
+      padding: const EdgeInsets.only(left: 30, right: 30),
+      child: TextFormField(
+        keyboardType: TextInputType.number,
+        controller: phonecontroller,
+        decoration: InputDecoration(
+          prefixText: '+91 ',
           filled: true,
-          fillColor: Colors.white,
-          prefixIcon: Container(
-            padding: const EdgeInsets.all(15),
-            child: InkWell(
-              onTap: () {},
-              child: Text(
-                "${selectedcountry.flagEmoji} ${selectedcountry.phoneCode}",
-                style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          )),
+          fillColor: const Color.fromRGBO(75, 58, 136, 1),
+          border: OutlineInputBorder(
+
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(20)),
+          hintText: 'Enter your number',
+          hintStyle: const  TextStyle(
+             
+          ),
+        ),
+      ),
     );
   }
 }

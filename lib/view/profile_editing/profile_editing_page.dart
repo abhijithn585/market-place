@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:market_place/controller/firestore_provider.dart';
@@ -8,6 +7,7 @@ import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/model/user_model.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class ProfileEditingPage extends StatefulWidget {
   ProfileEditingPage({required this.currentUser, super.key});
   UserModel? currentUser;

@@ -165,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BottomNavBar(),
+            builder: (context) => const BottomNavBar(),
           ));
     } else {
       ScaffoldMessenger.of(context)

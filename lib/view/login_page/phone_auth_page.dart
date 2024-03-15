@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
@@ -25,7 +24,7 @@ class PhoneAuthPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SafeArea(
+            const SafeArea(
               child: Icon(
                 Icons.arrow_back,
                 color: Colors.white,

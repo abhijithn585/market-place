@@ -23,15 +23,15 @@ class CustomButtons extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 ),
-                Icon(
+                const Icon(
                   Icons.arrow_forward_ios_rounded,
                   color: Colors.black54,
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
           ],

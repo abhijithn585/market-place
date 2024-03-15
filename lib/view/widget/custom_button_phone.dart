@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomButtonPhone extends StatelessWidget {
-  CustomButtonPhone(
+  const CustomButtonPhone(
       {super.key,
       required this.size,
       required this.buttonname,

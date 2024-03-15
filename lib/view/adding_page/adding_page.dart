@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:market_place/view/widget/custom_text_field.dart';
 
 class AddingPage extends StatefulWidget {
   const AddingPage({super.key});
@@ -102,23 +100,23 @@ class _AddingPageState extends State<AddingPage> {
                 child: Row(
                   children: [
                     Container(
-                      child: const Icon(Icons.add),
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(20)),
+                      child: const Icon(Icons.add),
                     ),
                     const SizedBox(
                       width: 30,
                     ),
                     Container(
-                      child: const Icon(Icons.add),
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(20)),
+                      child: const Icon(Icons.add),
                     )
                   ],
                 ),

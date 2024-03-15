@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
-import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/view/listing_page/listing_page.dart';
 import 'package:market_place/view/profile_editing/profile_editing_page.dart';
 import 'package:market_place/view/sold_page/sold_page.dart';

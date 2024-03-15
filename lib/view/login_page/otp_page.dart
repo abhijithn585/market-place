@@ -24,12 +24,11 @@ class OtpScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SafeArea(
-              
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+            const SafeArea(
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
@@ -38,46 +37,39 @@ class OtpScreen extends StatelessWidget {
                 children: [
                   Text("Otp",
                       style: GoogleFonts.urbanist(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-)),
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                      )),
                   const SizedBox(
                     width: 10,
                   ),
                   Text(
                     'verification',
                     style: GoogleFonts.urbanist(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        ),
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
             ),
-            // Center(
-            //   child: Image.asset(
-            //     'assets/images/cloud.png',
-            //     height: size.height / 3.8,
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Enter the verification code we just sent on your',
                     style: GoogleFonts.urbanist(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        ),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     'phonenumber',
                     style: GoogleFonts.urbanist(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        ),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),

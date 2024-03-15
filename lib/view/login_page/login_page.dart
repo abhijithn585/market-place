@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/view/login_page/phone_auth_page.dart';
-import 'package:market_place/view/phone_authentication/phone_authentication.dart';
 import 'package:market_place/view/register_page/register_page.dart';
 import 'package:market_place/view/widget/bottom_nav_bar.dart';
 import 'package:market_place/view/widget/custom_text_field.dart';
@@ -22,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   @override
   void dispose() {
-    // TODO: implement dispose
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -172,6 +170,7 @@ class _LoginPageState extends State<LoginPage> {
     User? user = await signInservice.signInWithEmail(email, password, context);
     if (user != null) {
       Navigator.pushAndRemoveUntil(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
             builder: (context) => const BottomNavBar(),
