@@ -14,12 +14,11 @@ class FirestoreProvider extends ChangeNotifier {
           .doc(service.auth.currentUser!.uid)
           .get();
       currentUser = UserModel.fromJson(snapshot.data()!);
-
-      notifyListeners();
       return currentUser;
     } catch (e) {
       throw Exception(e);
     }
+    
   }
 
   updateUserInfo({

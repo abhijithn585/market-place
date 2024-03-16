@@ -9,12 +9,8 @@ class AuthProviders extends ChangeNotifier {
     return service.signInWithEmailAndPassword(email, password, context);
   }
 
-  signUpWithEmail(String email, String password, String name) async {
-    try {
-      await service.signUpWithEmailAndPassword(name, email, password);
-    } catch (e) {
-      Exception('Signup email error$e');
-    }
+  signUpWithEmail(String email, String password, String name) {
+    return service.signUpWithEmailAndPassword(name, email, password);
   }
 
   signUpWithGoogle() {
@@ -24,6 +20,7 @@ class AuthProviders extends ChangeNotifier {
   signUpWithGithub(context) {
     return service.signInWithGithub(context);
   }
+
   signInWithPhone(
       String phonenumber, String name, String email, BuildContext context) {
     try {
@@ -46,6 +43,7 @@ class AuthProviders extends ChangeNotifier {
       throw Exception(e);
     }
   }
+
   signOut() {
     return service.signout();
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/view/widget/bottom_nav_bar.dart';
@@ -35,6 +34,9 @@ class _RegisterPageState extends State<RegisterPage> {
           padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
           child: Column(
             children: [
+              const SizedBox(
+                height: 10,
+              ),
               Text(
                 'Welcome back! Glad to see you, Again!',
                 style: GoogleFonts.poppins(
@@ -77,7 +79,14 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  signUpWithEmail(context);
+                  if (areAllFieldFilled()) {
+                    signUpWithEmail(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text("Please fill in all fields")),
+                    );
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor:
@@ -86,55 +95,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       MaterialStateProperty.all<Size>(const Size(200, 60)),
                 ),
                 child: const Text(
-                  "Agree and Register",
+                  "Register",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
               const SizedBox(
                 height: 20,
-              ),
-              const Text(
-                "Or Login with",
-                style: TextStyle(color: Colors.black45),
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.grey[200]),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(FontAwesomeIcons.phone)),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.grey[200]),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(FontAwesomeIcons.google)),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.grey[200]),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(FontAwesomeIcons.github)),
-                  ),
-                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5, left: 70),
@@ -162,14 +128,16 @@ class _RegisterPageState extends State<RegisterPage> {
     if (passwordController.text == confirmPasswordController.text) {
       signUpService.signUpWithEmail(emailController.text,
           passwordController.text, userNameController.text);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const BottomNavBar(),
-          ));
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Password Don't Match")));
     }
+  }
+
+  bool areAllFieldFilled() {
+    return userNameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        confirmPasswordController.text.isNotEmpty;
   }
 }
