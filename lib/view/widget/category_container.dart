@@ -7,13 +7,20 @@ class CategoryContainer extends StatelessWidget {
   String name;
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        SizedBox(
-          height: 45,
-          child: Image.asset(image),
+        Column(
+          children: [
+            SizedBox(
+              height: 45,
+              child: Image.asset(image),
+            ),
+            Text(name)
+          ],
         ),
-        Text(name)
+        SizedBox(
+          width: 25,
+        )
       ],
     );
   }
