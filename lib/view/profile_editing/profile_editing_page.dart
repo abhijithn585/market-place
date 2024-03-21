@@ -19,13 +19,7 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController numberController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-    nameController.text = widget.currentUser!.name!;
-    emailController.text = widget.currentUser!.email!;
-    numberController.text = widget.currentUser?.phonenumber ?? '';
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

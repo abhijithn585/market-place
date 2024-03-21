@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:market_place/model/product_model.dart';
 import 'package:market_place/model/user_model.dart';
 import 'package:market_place/service/firestore_service.dart';
 
@@ -18,7 +19,6 @@ class FirestoreProvider extends ChangeNotifier {
     } catch (e) {
       throw Exception(e);
     }
-    
   }
 
   updateUserInfo({
@@ -27,10 +27,15 @@ class FirestoreProvider extends ChangeNotifier {
     required String number,
     required String image,
   }) {
-    return service.updateProfileInfo(name: name, email: email, number: number,image: image);
+    return service.updateProfileInfo(
+        name: name, email: email, number: number, image: image);
   }
 
   addProfileImage({required String username, required fileimage}) {
     return service.addProfileImage(username: username, fileimage: fileimage);
+  }
+
+  addProduct({required ProductModel product, required String name , required String uid}) {
+    return service.addProduct(product, name,uid);
   }
 }

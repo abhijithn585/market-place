@@ -19,6 +19,12 @@ class _HomePageState extends State<HomePage> {
  
 
   TextEditingController searchController = TextEditingController();
+   @override
+  void initState() {
+    super.initState();
+    Provider.of<FirestoreProvider>(context, listen: false).fetchCurrentUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

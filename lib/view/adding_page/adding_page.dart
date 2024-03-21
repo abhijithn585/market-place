@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:market_place/controller/firestore_provider.dart';
+import 'package:market_place/model/product_model.dart';
+import 'package:provider/provider.dart';
 
 class AddingPage extends StatefulWidget {
   const AddingPage({super.key});
@@ -8,6 +11,12 @@ class AddingPage extends StatefulWidget {
 }
 
 class _AddingPageState extends State<AddingPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController detailsController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,16 +29,17 @@ class _AddingPageState extends State<AddingPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("  Title"),
+              const Text("  Name"),
               const SizedBox(
                 height: 5,
               ),
               TextFormField(
+                controller: nameController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    hintText: "Title",
+                    hintText: "Name",
                     hintStyle: const TextStyle(
                       color: Color(0xFF996E4D),
                     )),
@@ -37,16 +47,18 @@ class _AddingPageState extends State<AddingPage> {
               const SizedBox(
                 height: 10,
               ),
-              const Text("  Description"),
+              const Text("  Details"),
               const SizedBox(
                 height: 5,
               ),
               TextFormField(
+                maxLines: 3,
+                controller: detailsController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    hintText: "Description",
+                    hintText: "Details",
                     hintStyle: const TextStyle(
                       color: Color(0xFF996E4D),
                     )),
@@ -59,11 +71,48 @@ class _AddingPageState extends State<AddingPage> {
                 height: 5,
               ),
               TextFormField(
+                controller: categoryController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                     hintText: "Category",
+                    hintStyle: const TextStyle(
+                      color: Color(0xFF996E4D),
+                    )),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text("  Location"),
+              const SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                controller: locationController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    hintText: "Location",
+                    hintStyle: const TextStyle(
+                      color: Color(0xFF996E4D),
+                    )),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text("  image"),
+              const SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                controller: imageController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    hintText: "Image",
                     hintStyle: const TextStyle(
                       color: Color(0xFF996E4D),
                     )),
@@ -76,6 +125,7 @@ class _AddingPageState extends State<AddingPage> {
                 height: 5,
               ),
               TextFormField(
+                controller: priceController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -123,13 +173,30 @@ class _AddingPageState extends State<AddingPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 130, top: 20),
-                child:
-                    ElevatedButton(onPressed: () {}, child: const Text("Done")),
+                child: ElevatedButton(
+                    onPressed: () {
+                      addProduct(context);
+                    },
+                    child: const Text("Done")),
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  addProduct(BuildContext context) {
+    final pro = Provider.of<FirestoreProvider>(context, listen: false);
+    final uid = pro.service.auth.currentUser!.uid;
+    ProductModel product = ProductModel(
+        name: nameController.text,
+        price: priceController.text,
+        category: categoryController.text,
+        details: detailsController.text,
+        imageUrl: imageController.text,
+        location: locationController.text);
+    pro.addProduct(product: product, name: nameController.text, uid: uid);
+    Navigator.pop(context);
   }
 }
