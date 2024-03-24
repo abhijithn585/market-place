@@ -23,7 +23,16 @@ class FirestoreService {
       throw Exception();
     }
   }
-
+ addProductImage({required String productname, required fileimage}) async {
+    Reference folder = storage.child('productimage');
+    Reference image = folder.child("${productname}.jpg");
+    try {
+      await image.putFile(fileimage);
+      downloadUrl = await image.getDownloadURL();
+    } catch (e) {
+      throw Exception();
+    }
+  }
   updateProfileInfo(
       {required String name,
       required String email,
@@ -51,6 +60,33 @@ class FirestoreService {
     try {
       await image.putFile(fileimage);
       downloadUrl = await image.getDownloadURL();
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+
+  addToFavoraits(ProductModel product, String productname) async {
+    try {
+      await firestore
+          .collection('user')
+          .doc(auth.currentUser!.uid)
+          .collection('favoraits')
+          .doc(productname)
+          .set(product.toJson());
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  deleteFavoritItems(String productname) async {
+    try {
+      await firestore
+          .collection('user')
+          .doc(auth.currentUser!.uid)
+          .collection('favoraits')
+          .doc(productname)
+          .delete();
     } catch (e) {
       throw Exception();
     }

@@ -4,7 +4,6 @@ import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/firebase_options.dart';
-import 'package:market_place/view/auth_gate.dart';
 import 'package:market_place/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 

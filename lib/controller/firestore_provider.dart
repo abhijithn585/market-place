@@ -8,8 +8,11 @@ import 'package:market_place/service/firestore_service.dart';
 class FirestoreProvider extends ChangeNotifier {
   FirestoreService service = FirestoreService();
   List<ProductModel> productList = [];
+  List<ProductModel> favoraits = [];
   List<String> categoryList = [];
+  String? selectedCategory;
   UserModel? currentUser;
+  String searchQuery = '';
 
   fetchCurrentUser() async {
     try {
@@ -41,7 +44,11 @@ class FirestoreProvider extends ChangeNotifier {
   List<ProductModel> fetchProductsByCategory({required String category}) {
     try {
       productList.clear();
-      service.firestore.collection('products').snapshots().listen((product) {
+      service.firestore
+          .collection('products')
+          .where('category', isEqualTo: category)
+          .snapshots()
+          .listen((product) {
         productList = product.docs
             .map((doc) => ProductModel.fromJson(doc.data()))
             .toList();
@@ -51,6 +58,38 @@ class FirestoreProvider extends ChangeNotifier {
     } catch (e) {
       throw Exception();
     }
+  }
+
+  List<ProductModel> fetchProducts() {
+    try {
+      if (searchQuery.isNotEmpty) {
+        service.firestore.collection('products').snapshots().listen((product) {
+          productList = product.docs
+              .map((doc) => ProductModel.fromJson(doc.data()))
+              .where((ProductModel product) => product.name!
+                  .toLowerCase()
+                  .contains(searchQuery.toLowerCase()))
+              .toList();
+          notifyListeners();
+        });
+        return productList;
+      } else {
+        service.firestore.collection('products').snapshots().listen((product) {
+          productList = product.docs
+              .map((doc) => ProductModel.fromJson(doc.data()))
+              .toList();
+          notifyListeners();
+        });
+        return productList;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  searchProducts(String query) {
+    searchQuery = query;
+    fetchProducts();
   }
 
   updateUserInfo({
@@ -72,5 +111,32 @@ class FirestoreProvider extends ChangeNotifier {
       required String name,
       required String uid}) {
     return service.addProduct(product, name, uid);
+  }
+
+  addToFavoraits({required ProductModel product, required String productname}) {
+    return service.addToFavoraits(product, productname);
+  }
+
+  List<ProductModel> fetchFavoritItems() {
+    try {
+      service.firestore
+          .collection('user')
+          .doc(service.auth.currentUser!.uid)
+          .collection('favoraits')
+          .snapshots()
+          .listen((favorititems) {
+        favoraits = favorititems.docs
+            .map((doc) => ProductModel.fromJson(doc.data()))
+            .toList();
+        notifyListeners();
+      });
+      return favoraits;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  deleteFavorits({required String productname}) {
+    return service.deleteFavoritItems(productname);
   }
 }

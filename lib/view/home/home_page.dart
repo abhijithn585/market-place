@@ -1,31 +1,29 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:market_place/constants/category_list.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:market_place/view/details_page/detials_page.dart';
-import 'package:market_place/view/widget/category_container.dart';
-import 'package:market_place/view/widget/custom_text_field.dart';
+import 'package:market_place/view/search_page/search_page.dart';
 import 'package:market_place/view/widget/heading_text.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     final pro = Provider.of<FirestoreProvider>(context, listen: false);
     pro.fetchCurrentUser();
+    pro.fetchProducts();
+    pro.fetchAllCategory();
   }
 
   @override
@@ -68,7 +66,6 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       Consumer<AuthProviders>(
-                        
                         builder: (context, value, child) => IconButton(
                           onPressed: () {
                             value.signOut();
@@ -81,10 +78,38 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  CustomTextField(
-                    icons: Icons.search,
-                    hintText: "search..",
-                    controller: searchController,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SearchPage(),
+                          ));
+                    },
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search,
+                              color: Colors.black45,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Search",
+                              style: TextStyle(color: Colors.black45),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -95,19 +120,44 @@ class _HomePageState extends State<HomePage> {
           ),
           HeadingText(heading: "Category"),
           SizedBox(
-            height: screenHeight * 0.1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
+            height: screenHeight * 0.08,
+            child: Consumer<FirestoreProvider>(
+              builder: (context, value, child) => ListView.builder(
+                itemCount: value.categoryList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  final categories = category[index];
-                  return CategoryContainer(
-                    name: categories.category!,
-                    image: categories.imageUrl!,
+                  final String category = value.categoryList[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        value.fetchProductsByCategory(category: category);
+                        value.selectedCategory = category;
+                      },
+                      child: Container(
+                        width: screenWidth * 0.25,
+                        height: screenHeight * 0.05,
+                        decoration: BoxDecoration(
+                          border: value.selectedCategory == category
+                              ? Border.all(color: Colors.black)
+                              : Border.all(color: Colors.transparent),
+                          color: const Color.fromARGB(255, 255, 2, 2),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Center(
+                          child: Text(
+                            category,
+                            style: GoogleFonts.urbanist(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   );
                 },
-                itemCount: category.length,
               ),
             ),
           ),
@@ -130,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DetailsPage(),
+                          builder: (context) => DetailsPage(product: product),
                         ),
                       ),
                       child: Container(
@@ -142,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Container(
                               color: Colors.black12,
-                              child: Image.asset(""),
+                              child: Image.asset("assets/images/bmw rr.webp"),
                             ),
                             Text(
                               product.name!,

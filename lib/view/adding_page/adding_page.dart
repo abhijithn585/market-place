@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/model/product_model.dart';
+import 'package:market_place/view/widget/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 
 class AddingPage extends StatefulWidget {
@@ -197,6 +198,6 @@ class _AddingPageState extends State<AddingPage> {
         imageUrl: imageController.text,
         location: locationController.text);
     pro.addProduct(product: product, name: nameController.text, uid: uid);
-    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavBar(),));
   }
 }
