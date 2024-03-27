@@ -12,4 +12,6 @@ class ProductImageProviders extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  
 }

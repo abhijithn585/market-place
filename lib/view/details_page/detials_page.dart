@@ -62,7 +62,7 @@ class DetailsPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.asset("assets/images/bmw rr.webp")),
+                  child: Image.network(product.imageUrl!)),
             )),
             const SizedBox(
               height: 20,

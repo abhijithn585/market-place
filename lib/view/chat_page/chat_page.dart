@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:market_place/view/chat_room_page/chat_room_page.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -34,30 +36,39 @@ class _ChatPageState extends State<ChatPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                "images/BMW_M3_Competition_(G80)_IMG_4041.jpg",
-                                height: 80,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Jassim"),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text('BMW M3 petrol,2023 mmodel')
-                                ],
-                              )
-                            ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChatRoomPage(),
+                                ));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: const Row(
+                              children: [
+                                // Image.asset(
+                                //   "images/BMW_M3_Competition_(G80)_IMG_4041.jpg",
+                                //   height: 80,
+                                // ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Jassim"),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text('BMW M3 petrol,2023 mmodel')
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -97,15 +108,15 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                   Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                  Image.asset(
-                    "images/seo_1055645.png",
-                    height: 200,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/seo_1055645.png",
+                        height: 200,
+                      ),
+                      const Text("You have no message so far")
+                    ],
                   ),
-                  const Text("You have no message so far")
-                                      ],
-                                    ),
                 ]),
               )
             ],

@@ -32,7 +32,8 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
                         height: 100,
                         width: 100,
                         child: CircleAvatar(
-                          backgroundImage: AssetImage("images/profile.jpg"),
+                          backgroundImage:
+                              AssetImage("assets/images/profile.jpg"),
                         ),
                       ),
                       SizedBox(
@@ -65,7 +66,8 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
                         width: 5,
                       ),
                       const CircleAvatar(
-                        backgroundImage: AssetImage("images/profile.jpg"),
+                        backgroundImage:
+                            AssetImage("assets/images/profile.jpg"),
                       )
                     ],
                   ),
@@ -76,7 +78,7 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const CircleAvatar(
-                        backgroundImage: AssetImage("images/dp.jpg"),
+                        backgroundImage: AssetImage("assets/images/dp.jpg"),
                       ),
                       const SizedBox(
                         width: 5,

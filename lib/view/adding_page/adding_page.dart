@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:market_place/controller/firestore_provider.dart';
+import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:market_place/view/widget/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +26,8 @@ class _AddingPageState extends State<AddingPage> {
   TextEditingController imageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -85,39 +93,6 @@ class _AddingPageState extends State<AddingPage> {
               const SizedBox(
                 height: 5,
               ),
-              const Text("  Location"),
-              const SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                controller: locationController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    hintText: "Location",
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF996E4D),
-                    )),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              const Text("  image"),
-              const SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                controller: imageController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    hintText: "Image",
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF996E4D),
-                    )),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -148,37 +123,67 @@ class _AddingPageState extends State<AddingPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 150,
-                      width: 150,
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const Icon(Icons.add),
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    Container(
-                      height: 150,
-                      width: 150,
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const Icon(Icons.add),
-                    )
-                  ],
+                child: Consumer<ImageProviders>(
+                  builder: (context, value, child) => Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          value.selectImage(source: ImageSource.camera);
+                        },
+                        child: Container(
+                          height: 150,
+                          width: 150,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: value.selectedImage != null
+                                      ? FileImage(
+                                          File(value.selectedImage!.path))
+                                      : AssetImage("assets/images/add.png")
+                                          as ImageProvider),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: const Icon(Icons.add),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 130, top: 20),
-                child: ElevatedButton(
-                    onPressed: () {
+                child: GestureDetector(
+                  onTap: () {
+                    if (areAllFieldFilled()) {
                       addProduct(context);
-                    },
-                    child: const Text("Done")),
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Please fill in all fields")),
+                      );
+                    }
+                  },
+                  child: Container(
+                    width: screenWidth * 0.25,
+                    height: screenHeight * 0.05,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Done',
+                        style: GoogleFonts.urbanist(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               )
             ],
           ),
@@ -187,17 +192,32 @@ class _AddingPageState extends State<AddingPage> {
     );
   }
 
-  addProduct(BuildContext context) {
+  addProduct(BuildContext context) async {
     final pro = Provider.of<FirestoreProvider>(context, listen: false);
+    final pros = Provider.of<ImageProviders>(context, listen: false);
     final uid = pro.service.auth.currentUser!.uid;
+    await pro.addProductImage(
+        productname: nameController.text,
+        fileimage: File(pros.selectedImage!.path));
     ProductModel product = ProductModel(
         name: nameController.text,
         price: priceController.text,
         category: categoryController.text,
         details: detailsController.text,
-        imageUrl: imageController.text,
+        imageUrl: pro.service.downloadUrl,
         location: locationController.text);
     pro.addProduct(product: product, name: nameController.text, uid: uid);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavBar(),));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BottomNavBar(),
+        ));
+  }
+
+  bool areAllFieldFilled() {
+    return nameController.text.isNotEmpty &&
+        priceController.text.isNotEmpty &&
+        categoryController.text.isNotEmpty &&
+        detailsController.text.isNotEmpty;
   }
 }

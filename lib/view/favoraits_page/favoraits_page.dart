@@ -38,7 +38,7 @@ class _FavoraitsPageState extends State<FavoraitsPage> {
                         color: Colors.red),
                   ),
                   Text(
-                    "orite",
+                    "ourite",
                     style: GoogleFonts.poppins(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,

@@ -23,16 +23,18 @@ class FirestoreService {
       throw Exception();
     }
   }
- addProductImage({required String productname, required fileimage}) async {
+
+  addProductImage({required String productname, required fileimage}) async {
     Reference folder = storage.child('productimage');
     Reference image = folder.child("${productname}.jpg");
     try {
       await image.putFile(fileimage);
       downloadUrl = await image.getDownloadURL();
     } catch (e) {
-      throw Exception();
+      throw Exception(e);
     }
   }
+
   updateProfileInfo(
       {required String name,
       required String email,
@@ -64,7 +66,6 @@ class FirestoreService {
       throw Exception();
     }
   }
-
 
   addToFavoraits(ProductModel product, String productname) async {
     try {

@@ -33,12 +33,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.white,
         items: const [
           Icon(Icons.home),
           Icon(Icons.favorite_border),
           Icon(Icons.add_circle_outline_sharp),
-          Icon(Icons.chat_bubble_outlined),
+          Icon(Icons.chat_bubble_outline),
           Icon(Icons.person),
         ],
         index: _selectedIndex,

@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:market_place/controller/firestore_provider.dart';
+import 'package:market_place/view/favoraits_page/widgets/widgets.dart';
+import 'package:market_place/view/listing_page/widgets/listing_container.dart';
+import 'package:market_place/view/widget/custom_back_button.dart';
+import 'package:provider/provider.dart';
 
 class ListingPage extends StatefulWidget {
   const ListingPage({super.key});
@@ -9,50 +15,62 @@ class ListingPage extends StatefulWidget {
 
 class _ListingPageState extends State<ListingPage> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<FirestoreProvider>(context, listen: false).fetchFavoritItems();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 14),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  height: 180,
-                  width: 180,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(171, 224, 224, 224),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: Colors.grey[200],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 70, left: 14),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  CustomBackButton(
+                      bottom: 30,
+                      left: 10,
+                      right: 30,
+                      top: 30,
+                      size: size,
+                      color: Colors.white,
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        "images/BMW_M3_Competition_(G80)_IMG_4041.jpg",
-                        fit: BoxFit.cover,
+                      Text(
+                        'Your ',
+                        style: GoogleFonts.poppins(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
                       ),
-                      const Text(
-                        "MackBook Air 2023 model",
-                        style: TextStyle(fontSize: 13),
+                      Text(
+                        "Products",
+                        style: GoogleFonts.poppins(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "\$5000",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      )
                     ],
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: ListingContainer(),
+              ),
+            ],
+          ),
         ),
       ),
     );

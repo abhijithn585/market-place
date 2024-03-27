@@ -9,6 +9,7 @@ class FirestoreProvider extends ChangeNotifier {
   FirestoreService service = FirestoreService();
   List<ProductModel> productList = [];
   List<ProductModel> favoraits = [];
+  List<ProductModel> userProductList = [];
   List<String> categoryList = [];
   String? selectedCategory;
   UserModel? currentUser;
@@ -87,6 +88,25 @@ class FirestoreProvider extends ChangeNotifier {
     }
   }
 
+  List<ProductModel> fetchUserProduct() {
+    try {
+      service.firestore
+          .collection('user')
+          .doc(service.auth.currentUser!.uid)
+          .collection('products')
+          .snapshots()
+          .listen((product) {
+        userProductList = product.docs
+            .map((doc) => ProductModel.fromJson(doc.data()))
+            .toList();
+        notifyListeners();
+      });
+      return userProductList;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   searchProducts(String query) {
     searchQuery = query;
     fetchProducts();
@@ -138,5 +158,10 @@ class FirestoreProvider extends ChangeNotifier {
 
   deleteFavorits({required String productname}) {
     return service.deleteFavoritItems(productname);
+  }
+
+  addProductImage({required String productname, required fileimage}) {
+    return service.addProductImage(
+        productname: productname, fileimage: fileimage);
   }
 }

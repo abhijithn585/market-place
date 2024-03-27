@@ -101,8 +101,7 @@ class SearchPage extends StatelessWidget {
                                         BorderRadius.all(Radius.circular(10))),
                                 child: Hero(
                                   tag: product.name!,
-                                  child:
-                                      Image.asset('assets/images/bmw rr.webp'),
+                                  child: Image.network(product.imageUrl!),
                                 ),
                               ),
                             ),

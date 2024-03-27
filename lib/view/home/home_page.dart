@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
+import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:market_place/view/details_page/detials_page.dart';
 import 'package:market_place/view/search_page/search_page.dart';
@@ -16,7 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   void initState() {
     super.initState();
@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -183,38 +184,46 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => DetailsPage(product: product),
                         ),
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey[100],
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              color: Colors.black12,
-                              child: Image.asset("assets/images/bmw rr.webp"),
-                            ),
-                            Text(
-                              product.name!,
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6, right: 6),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    product.price!,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                      child: Consumer<ImageProviders>(
+                        builder: (context, value, child) => Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  color: Colors.black12,
+                                  child: Image.network(
+                                    product.imageUrl ?? "",
+                                    height: 120,
                                   ),
-                                  const Icon(Icons.favorite_border_sharp),
-                                ],
-                              ),
+                                ),
+                                Text(
+                                  product.name!,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 6, right: 6),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "₹${product.price}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
