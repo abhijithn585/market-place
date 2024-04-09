@@ -123,10 +123,10 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  signUpWithEmail(BuildContext context) {
+  signUpWithEmail(BuildContext context)  {
     final signUpService = Provider.of<AuthProviders>(context, listen: false);
     if (passwordController.text == confirmPasswordController.text) {
-      signUpService.signUpWithEmail(emailController.text,
+       signUpService.signUpWithEmail(emailController.text,
           passwordController.text, userNameController.text);
     } else {
       ScaffoldMessenger.of(context)

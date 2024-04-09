@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/model/product_model.dart';
-import 'package:market_place/view/chat_page/chat_page.dart';
+import 'package:market_place/view/chat_room_page/chat_room_page.dart';
 import 'package:market_place/view/details_page/widgets/details_row.dart';
 import 'package:market_place/view/widget/custom_back_button.dart';
 import 'package:provider/provider.dart';
@@ -148,7 +148,11 @@ class DetailsPage extends StatelessWidget {
                                   backgroundColor:
                                       MaterialStatePropertyAll(Colors.red)),
                               onPressed: () {
-                                const ChatPage();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ChatRoomPage(
+                                    productModel: product,
+                                  ),
+                                ));
                               },
                               child: Text(
                                 "Chat with Seller",

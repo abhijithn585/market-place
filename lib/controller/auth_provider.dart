@@ -10,6 +10,7 @@ class AuthProviders extends ChangeNotifier {
   }
 
   signUpWithEmail(String email, String password, String name) {
+    notifyListeners();
     return service.signUpWithEmailAndPassword(name, email, password);
   }
 

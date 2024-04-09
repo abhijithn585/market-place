@@ -35,7 +35,35 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      value.selectImage(source: ImageSource.gallery);
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: AlertDialog(
+                                actions: [
+                                  const SizedBox(
+                                    height: 100,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        value.selectImage(
+                                            source: ImageSource.camera);
+                                      },
+                                      icon: const Icon(Icons.camera_alt)),
+                                  const SizedBox(
+                                    width: 100,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        value.selectImage(
+                                            source: ImageSource.gallery);
+                                      },
+                                      icon: const Icon(
+                                          Icons.photo_camera_back_outlined)),
+                                ],
+                              ),
+                            );
+                          });
                     },
                     child: Container(
                       width: 100,
@@ -127,7 +155,30 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
                 padding: const EdgeInsets.only(left: 90, top: 10),
                 child: ElevatedButton(
                   onPressed: () {
-                    updateUserInfo();
+                    final imagepro =
+                        Provider.of<ImageProviders>(context, listen: false);
+                    final pro =
+                        Provider.of<FirestoreProvider>(context, listen: false);
+                    if (emailController.text.isNotEmpty &&
+                        nameController.text.isNotEmpty &&
+                        numberController.text.isNotEmpty &&
+                        imagepro.selectedImage?.path != null) {
+                      pro.updateUserInfo(
+                          name: nameController.text,
+                          email: emailController.text,
+                          number: numberController.text,
+                          fileImage: imagepro.selectedImage);
+                    } else {
+                      ScaffoldMessenger.maybeOf(context)!.showSnackBar(
+                          SnackBar(content: Text('Field is Empty')));
+                    }
+                    // if (imagepro.selectedImage != null) {
+                    //   pro.addProfileImage(
+                    //       username: nameController.text,
+                    //       fileimage: File(imagepro.selectedImage != null
+                    //           ? imagepro.selectedImage!.path
+                    //           : ''));
+                    // }
                     Navigator.pop(context);
                   },
                   style: ButtonStyle(
@@ -147,19 +198,5 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
         ),
       ),
     );
-  }
-
-  void updateUserInfo() async {
-    final pro = Provider.of<FirestoreProvider>(context, listen: false);
-    final imagepro = Provider.of<ImageProviders>(context, listen: false);
-    await pro.addProfileImage(
-        username: nameController.text,
-        fileimage: File(imagepro.selectedImage!.path));
-
-    pro.updateUserInfo(
-        name: nameController.text,
-        email: emailController.text,
-        image: pro.service.downloadUrl!,
-        number: numberController.text);
   }
 }

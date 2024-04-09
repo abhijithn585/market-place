@@ -1,12 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/controller/image_provider.dart';
+import 'package:market_place/controller/product_image_provider.dart';
 import 'package:market_place/model/product_model.dart';
+import 'package:market_place/model/user_model.dart';
 import 'package:market_place/view/widget/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +24,14 @@ class _AddingPageState extends State<AddingPage> {
   TextEditingController priceController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController imageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final fectuser = Provider.of<FirestoreProvider>(context, listen: false);
+    fectuser.fetchCurrentUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -123,7 +131,7 @@ class _AddingPageState extends State<AddingPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Consumer<ImageProviders>(
+                child: Consumer<ProductImageProviders>(
                   builder: (context, value, child) => Row(
                     children: [
                       GestureDetector(
@@ -138,7 +146,8 @@ class _AddingPageState extends State<AddingPage> {
                                   image: value.selectedImage != null
                                       ? FileImage(
                                           File(value.selectedImage!.path))
-                                      : AssetImage("assets/images/add.png")
+                                      : const AssetImage(
+                                              "assets/images/add.png")
                                           as ImageProvider),
                               color: Colors.grey,
                               borderRadius: BorderRadius.circular(20)),
@@ -192,27 +201,92 @@ class _AddingPageState extends State<AddingPage> {
     );
   }
 
-  addProduct(BuildContext context) async {
-    final pro = Provider.of<FirestoreProvider>(context, listen: false);
-    final pros = Provider.of<ImageProviders>(context, listen: false);
-    final uid = pro.service.auth.currentUser!.uid;
-    await pro.addProductImage(
-        productname: nameController.text,
-        fileimage: File(pros.selectedImage!.path));
-    ProductModel product = ProductModel(
-        name: nameController.text,
-        price: priceController.text,
-        category: categoryController.text,
-        details: detailsController.text,
-        imageUrl: pro.service.downloadUrl,
-        location: locationController.text);
-    pro.addProduct(product: product, name: nameController.text, uid: uid);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BottomNavBar(),
-        ));
-  }
+  // addProduct(BuildContext context) async {
+  //   final pro = Provider.of<FirestoreProvider>(context, listen: false);
+  //   final pros = Provider.of<ProductImageProviders>(context, listen: false);
+  //   final user = pro.service.auth.currentUser!;
+  //   final sellerUid = user.uid;
+  //   final displayName = user.displayName;
+  //   final photoUrl = user.photoURL;
+
+  //   // Check if selectedImage is not null before accessing its path property
+  //   File? imageFile;
+  //   if (pros.selectedImage != null) {
+  //     imageFile = File(pros.selectedImage!.path);
+  //   }
+
+  //   // Call addProductImage only if imageFile is not null
+  //   if (imageFile != null) {
+  //     await pro.addProductImage(
+  //       productname: nameController.text,
+  //       fileimage: imageFile,
+  //     );
+  //   } else {
+  //     // Handle case when no image is selected
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Please select an image")),
+  //     );
+  //     return; // Exit function early
+  //   }
+  //   final userModel = UserModel(
+  //       uid: sellerUid, name: displayName ?? "", image: photoUrl ?? "");
+  //   ProductModel product = ProductModel(
+  //       name: nameController.text,
+  //       price: priceController.text,
+  //       category: categoryController.text,
+  //       details: detailsController.text,
+  //       imageUrl: pro.service.downloadUrl,
+  //       sellerUid: sellerUid,
+  //       // userModel: userModel,
+  //       location: locationController.text);
+  //   pro.addProduct(
+  //     product: product,
+  //     name: nameController.text,
+  //     uid: sellerUid,
+  //   );
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => const BottomNavBar(),
+  //       ));
+  // }
+
+addProduct(BuildContext context) async {
+  final pro = Provider.of<FirestoreProvider>(context, listen: false);
+  final pros = Provider.of<ProductImageProviders>(context, listen: false);
+  final user = pro.currentUser;
+  final sellerUid = user!.uid;
+  final displayName = user.name;
+  final photoUrl = user.image;
+
+  await pro.addProductImage(
+    productname: nameController.text,
+    fileimage: File(pros.selectedImage!.path)
+  );
+  ProductModel product = ProductModel(
+    name: nameController.text,
+    price: priceController.text,
+    category: categoryController.text,
+    details: detailsController.text,
+    imageUrl: pro.service.downloadUrl,
+    sellerUid: sellerUid,
+    sellerImage: photoUrl,
+    sellerName: displayName,
+    // userModel: UserModel(
+    //   uid: uid,
+    //   name: displayName ?? "",
+    //   image: photoUrl ?? ""
+    // ),
+    location: locationController.text
+  );
+  pro.addProduct(product: product, name: nameController.text, uid: sellerUid!,);
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const BottomNavBar(),
+    )
+  );
+}
 
   bool areAllFieldFilled() {
     return nameController.text.isNotEmpty &&

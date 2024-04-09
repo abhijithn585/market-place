@@ -28,6 +28,17 @@ class FirestoreProvider extends ChangeNotifier {
     }
   }
 
+  
+
+  getUserName() async {
+    try {
+      await service.firestore.collection('user').get();
+      notifyListeners();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   fetchAllCategory() {
     try {
       service.firestore.collection('products').snapshots().listen((product) {
@@ -112,25 +123,30 @@ class FirestoreProvider extends ChangeNotifier {
     fetchProducts();
   }
 
-  updateUserInfo({
-    required String name,
-    required String email,
-    required String number,
-    required String image,
-  }) {
+  updateUserInfo(
+      {required String name,
+      required String email,
+      required String number,
+      fileImage}) {
+    notifyListeners();
     return service.updateProfileInfo(
-        name: name, email: email, number: number, image: image);
+        name: name, email: email, number: number, fileImage: fileImage);
   }
 
-  addProfileImage({required String username, required fileimage}) {
-    return service.addProfileImage(username: username, fileimage: fileimage);
-  }
+  // addProfileImage({required String username, fileimage}) {
+  //   return service.addProfileImage(username: username, fileimage: fileimage);
+  // }
 
-  addProduct(
-      {required ProductModel product,
-      required String name,
-      required String uid}) {
-    return service.addProduct(product, name, uid);
+  addProduct({
+    required ProductModel product,
+    required String name,
+    required String uid,
+  }) {
+    return service.addProduct(
+      product,
+      name,
+      uid,
+    );
   }
 
   addToFavoraits({required ProductModel product, required String productname}) {

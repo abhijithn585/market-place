@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:market_place/model/product_model.dart';
 import 'package:market_place/view/chat_room_page/chat_room_page.dart';
 
 class ChatPage extends StatefulWidget {
@@ -10,6 +11,8 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+    ProductModel? product;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -41,7 +44,7 @@ class _ChatPageState extends State<ChatPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ChatRoomPage(),
+                                  builder: (context) => ChatRoomPage(productModel: product!),
                                 ));
                           },
                           child: Container(

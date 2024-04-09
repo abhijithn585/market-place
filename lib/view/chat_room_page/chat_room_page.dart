@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:market_place/model/product_model.dart';
 
 // ignore: must_be_immutable
 class ChatRoomPage extends StatefulWidget {
-  const ChatRoomPage({super.key});
+  final ProductModel productModel;
+  const ChatRoomPage({super.key, required this.productModel});
   @override
   State<ChatRoomPage> createState() => _ChatPageRoomState();
 }
@@ -24,7 +26,7 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(20),
                   child: Column(
                     children: [
@@ -32,15 +34,15 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
                         height: 100,
                         width: 100,
                         child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage("assets/images/profile.jpg"),
+                          backgroundImage: NetworkImage(
+                              '${widget.productModel.sellerImage}'),
                         ),
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "Jassim",
+                        "${widget.productModel.sellerName}",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],

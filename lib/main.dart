@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:market_place/controller/auth_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/controller/image_provider.dart';
+import 'package:market_place/controller/product_image_provider.dart';
 import 'package:market_place/firebase_options.dart';
 import 'package:market_place/view/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => FirestoreProvider(),
-        )
+        ),
+        ChangeNotifierProvider(create: (context) => ProductImageProviders(),)
       ],
       child: const MaterialApp(
           debugShowCheckedModeBanner: false, home: SplashScreen()),
