@@ -7,6 +7,7 @@ import 'package:market_place/view/details_page/widgets/details_row.dart';
 import 'package:market_place/view/widget/custom_back_button.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class DetailsPage extends StatelessWidget {
   DetailsPage({super.key, required this.product});
   ProductModel product;
@@ -30,7 +31,7 @@ class DetailsPage extends StatelessWidget {
                       size: size,
                       color: Colors.white,
                       child: const Icon(
-                        Icons.arrow_back,
+                        Icons.arrow_back_ios,
                         color: Colors.black,
                       )),
                   Padding(
@@ -60,9 +61,12 @@ class DetailsPage extends StatelessWidget {
             Center(
                 child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(product.imageUrl!)),
+              child: SizedBox(
+                height: size.height * 0.40,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(product.imageUrl!)),
+              ),
             )),
             const SizedBox(
               height: 20,
@@ -82,7 +86,7 @@ class DetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(25, 10, 0, 0),
                       child: Text(
                         product.name!,
                         style: GoogleFonts.urbanist(
@@ -106,7 +110,7 @@ class DetailsPage extends StatelessWidget {
                         width: size.width,
                         height: size.height * 0.15,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(111, 189, 189, 189),
+                            color: const Color.fromARGB(111, 189, 189, 189),
                             borderRadius: BorderRadius.circular(15)),
                         child: Column(
                           children: [

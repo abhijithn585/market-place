@@ -18,7 +18,7 @@ class CategoryContainer extends StatelessWidget {
             Text(name)
           ],
         ),
-        SizedBox(
+        const SizedBox(
           width: 25,
         )
       ],

@@ -92,7 +92,7 @@ class PhoneAuthPage extends StatelessWidget {
                       emailcontroller.text, context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Please enter a 10-digit phone number.'),
                     ),
                   );

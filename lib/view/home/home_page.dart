@@ -181,7 +181,9 @@ class _HomePageState extends State<HomePage> {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailsPage(product: product,),
+                          builder: (context) => DetailsPage(
+                            product: product,
+                          ),
                         ),
                       ),
                       child: Consumer<ImageProviders>(
@@ -194,8 +196,8 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                Container(
-                                  color: Colors.black12,
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
                                     product.imageUrl ?? "",
                                     height: 120,
@@ -203,7 +205,9 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Text(
                                   product.name!,
-                                  style: const TextStyle(fontSize: 14),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Padding(
                                   padding:

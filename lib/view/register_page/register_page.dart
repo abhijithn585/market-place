@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/auth_provider.dart';
-import 'package:market_place/view/widget/bottom_nav_bar.dart';
 import 'package:market_place/view/widget/custom_text_field.dart';
 import 'package:provider/provider.dart';
 

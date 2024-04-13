@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:market_place/controller/firestore_provider.dart';
-import 'package:market_place/view/favoraits_page/widgets/widgets.dart';
 import 'package:market_place/view/listing_page/widgets/listing_container.dart';
 import 'package:market_place/view/widget/custom_back_button.dart';
 import 'package:provider/provider.dart';

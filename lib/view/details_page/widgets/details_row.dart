@@ -44,7 +44,7 @@ class DetailsRow extends StatelessWidget {
                   width: width,
                   height: size.height * 0.05,
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(111, 189, 189, 189),
+                      color: const Color.fromARGB(111, 189, 189, 189),
                       borderRadius: BorderRadius.circular(10)),
                   child: Center(
                     child: Text(
@@ -79,7 +79,7 @@ class DetailsRow extends StatelessWidget {
                   width: size.width * 0.18,
                   height: size.height * 0.05,
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(111, 189, 189, 189),
+                      color: const Color.fromARGB(111, 189, 189, 189),
                       borderRadius: BorderRadius.circular(10)),
                   child: Center(
                     child: Text(

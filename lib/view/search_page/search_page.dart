@@ -7,7 +7,7 @@ import 'package:market_place/view/details_page/detials_page.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({Key? key});
+  const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,7 @@ class SearchPage extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     color: Colors.grey.shade100,
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
+                                        const BorderRadius.all(Radius.circular(10))),
                                 child: Hero(
                                   tag: product.name!,
                                   child: Image.network(product.imageUrl!),

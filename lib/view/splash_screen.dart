@@ -17,12 +17,12 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(
-      Duration(seconds: 5),
+      const Duration(seconds: 5),
       () {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => AuthGate(),
+              builder: (context) => const AuthGate(),
             ));
       },
     );
@@ -39,9 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          child: LottieBuilder.asset('assets/lottie/jg35nJKqPt.json'),
-        ),
+        child: LottieBuilder.asset('assets/lottie/jg35nJKqPt.json'),
       ),
     );
   }

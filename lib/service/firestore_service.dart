@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:market_place/model/chat_model.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:market_place/model/user_model.dart';
 
@@ -29,7 +27,7 @@ class FirestoreService {
 
   addProductImage({required String productname, required fileimage}) async {
     Reference folder = storage.child('productimage');
-    Reference image = folder.child("${productname}.jpg");
+    Reference image = folder.child("$productname.jpg");
     try {
       await image.putFile(fileimage);
       downloadUrl = await image.getDownloadURL();
@@ -46,7 +44,7 @@ class FirestoreService {
   }) async {
     try {
       Reference folder = storage.child('profileimage');
-      Reference image = folder.child("${name}.jpg");
+      Reference image = folder.child("$name.jpg");
       if (fileImage != null) {
         await image.putFile(fileImage);
         downloadUrl = await image.getDownloadURL();
@@ -109,22 +107,5 @@ class FirestoreService {
     }
   }
 
-  sendMessage(String recieverId, String message, String messageType) async {
-    final String currentUserId = auth.currentUser!.uid;
-    final Timestamp timestamp = Timestamp.now();
-    ChatModel chatModel = ChatModel(
-        messagetype: messageType,
-        content: message,
-        senderId: currentUserId,
-        time: timestamp,
-        recieverId: recieverId);
-    List ids = [currentUserId, recieverId];
-    ids.sort();
-    String chatroomId = ids.join('_');
-    await firestore
-        .collection('chat_room')
-        .doc(chatroomId)
-        .collection('messages')
-        .add(chatModel.toJson());
-  }
+  
 }

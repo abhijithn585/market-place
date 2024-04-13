@@ -1,4 +1,3 @@
-import 'package:market_place/model/user_model.dart';
 
 class ProductModel {
   String? name;

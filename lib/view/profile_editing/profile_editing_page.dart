@@ -170,7 +170,7 @@ class _ProfileEditingPageState extends State<ProfileEditingPage> {
                           fileImage: imagepro.selectedImage);
                     } else {
                       ScaffoldMessenger.maybeOf(context)!.showSnackBar(
-                          SnackBar(content: Text('Field is Empty')));
+                          const SnackBar(content: Text('Field is Empty')));
                     }
                     // if (imagepro.selectedImage != null) {
                     //   pro.addProfileImage(

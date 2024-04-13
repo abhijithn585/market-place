@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:market_place/model/chat_model.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:market_place/model/user_model.dart';
 import 'package:market_place/service/firestore_service.dart';
@@ -11,6 +12,7 @@ class FirestoreProvider extends ChangeNotifier {
   List<ProductModel> favoraits = [];
   List<ProductModel> userProductList = [];
   List<String> categoryList = [];
+  List<ChatModel> messages = [];
   String? selectedCategory;
   UserModel? currentUser;
   String searchQuery = '';
@@ -27,8 +29,6 @@ class FirestoreProvider extends ChangeNotifier {
       throw Exception(e);
     }
   }
-
-  
 
   getUserName() async {
     try {
@@ -179,5 +179,23 @@ class FirestoreProvider extends ChangeNotifier {
   addProductImage({required String productname, required fileimage}) {
     return service.addProductImage(
         productname: productname, fileimage: fileimage);
+  }
+
+  List<ChatModel> getMessages(String currentUserId, String recieverId) {
+    List ids = [currentUserId, recieverId];
+    ids.sort();
+    String chatroomid = ids.join('_');
+    service.firestore
+        .collection('chat_room')
+        .doc(chatroomid)
+        .collection('messages')
+        .orderBy("time", descending: false)
+        .snapshots()
+        .listen((message) {
+      messages =
+          message.docs.map((doc) => ChatModel.toJson(doc.data())).toList();
+      notifyListeners();
+    });
+    return messages;
   }
 }

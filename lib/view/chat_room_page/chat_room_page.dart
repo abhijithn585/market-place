@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/model/product_model.dart';
+import 'package:market_place/service/auth_service.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ChatRoomPage extends StatefulWidget {
@@ -10,6 +13,15 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatPageRoomState extends State<ChatRoomPage> {
+  AuthService service = AuthService();
+  @override
+  void initState() {
+    super.initState();
+    final currentUserid = service.firebaseAuth.currentUser!.uid;
+    Provider.of<FirestoreProvider>(context, listen: false)
+        .getMessages(currentUserid, widget.productModel.sellerUid!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +39,7 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
                       SizedBox(
@@ -38,69 +50,15 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
                               '${widget.productModel.sellerImage}'),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         "${widget.productModel.sellerName}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.blue),
-                        height: 30,
-                        width: 50,
-                        child: const Padding(
-                          padding: EdgeInsets.all(4),
-                          child: Text("Hii"),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const CircleAvatar(
-                        backgroundImage:
-                            AssetImage("assets/images/profile.jpg"),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: AssetImage("assets/images/dp.jpg"),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey),
-                        height: 30,
-                        width: 50,
-                        child: const Padding(
-                          padding: EdgeInsets.all(4),
-                          child: Text("helloo"),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 410,
                 ),
               ],
             ),

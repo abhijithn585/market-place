@@ -4,6 +4,7 @@ class ChatModel {
   String? messagetype;
   String? recieverId;
   String? senderId;
+  String? senderEmailId;
   String? content;
   Timestamp? time;
 
@@ -11,6 +12,7 @@ class ChatModel {
       {required this.messagetype,
       required this.content,
       required this.senderId,
+      required this.senderEmailId,
       required this.time,
       required this.recieverId});
   factory ChatModel.toJson(Map<String, dynamic> json) {
@@ -18,6 +20,7 @@ class ChatModel {
         messagetype: json['messagetype'],
         content: json['content'],
         senderId: json['senderId'],
+        senderEmailId: json['senderEmailId'],
         time: json['time'],
         recieverId: json['recieverId']);
   }
@@ -26,6 +29,7 @@ class ChatModel {
       'messagetype': messagetype,
       'content': content,
       'senderId': senderId,
+      'senderEmailId': senderEmailId,
       'recieverId': recieverId,
       'time': time,
     };

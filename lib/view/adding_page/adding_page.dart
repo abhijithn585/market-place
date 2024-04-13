@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:market_place/controller/firestore_provider.dart';
-import 'package:market_place/controller/image_provider.dart';
 import 'package:market_place/controller/product_image_provider.dart';
 import 'package:market_place/model/product_model.dart';
-import 'package:market_place/model/user_model.dart';
 import 'package:market_place/view/widget/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -281,6 +279,7 @@ addProduct(BuildContext context) async {
   );
   pro.addProduct(product: product, name: nameController.text, uid: sellerUid!,);
   Navigator.push(
+    // ignore: use_build_context_synchronously
     context,
     MaterialPageRoute(
       builder: (context) => const BottomNavBar(),

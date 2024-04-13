@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:market_place/view/chat_room_page/chat_room_page.dart';
 
