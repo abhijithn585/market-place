@@ -134,7 +134,35 @@ class _AddingPageState extends State<AddingPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          value.selectImage(source: ImageSource.camera);
+                          showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: AlertDialog(
+                                actions: [
+                                  const SizedBox(
+                                    height: 100,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        value.selectImage(
+                                            source: ImageSource.camera);
+                                      },
+                                      icon: const Icon(Icons.camera_alt)),
+                                  const SizedBox(
+                                    width: 100,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        value.selectImage(
+                                            source: ImageSource.gallery);
+                                      },
+                                      icon: const Icon(
+                                          Icons.photo_camera_back_outlined)),
+                                ],
+                              ),
+                            );
+                          });
                         },
                         child: Container(
                           height: 150,

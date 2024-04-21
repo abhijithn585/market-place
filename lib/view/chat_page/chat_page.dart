@@ -10,7 +10,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-    ProductModel? product;
+  ProductModel? product;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,8 @@ class _ChatPageState extends State<ChatPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ChatRoomPage(productModel: product!),
+                                  builder: (context) =>
+                                      ChatRoomPage(productModel: product!),
                                 ));
                           },
                           child: Container(

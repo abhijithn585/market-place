@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:market_place/controller/chat_image_provider.dart';
 import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:market_place/service/auth_service.dart';
+import 'package:market_place/service/chat_service.dart';
+import 'package:market_place/view/chat_room_page/widget/chat_bubble.dart';
+import 'package:market_place/view/chat_room_page/widget/image_selector_dialog.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -13,6 +18,8 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatPageRoomState extends State<ChatRoomPage> {
+  TextEditingController messagecontroller = TextEditingController();
+
   AuthService service = AuthService();
   @override
   void initState() {
@@ -20,10 +27,13 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
     final currentUserid = service.firebaseAuth.currentUser!.uid;
     Provider.of<FirestoreProvider>(context, listen: false)
         .getMessages(currentUserid, widget.productModel.sellerUid!);
+    print('UserIds 1 ${currentUserid} 2 ${widget.productModel.sellerUid}');
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -32,8 +42,7 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
         ),
         centerTitle: true,
       ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
+      body: Column(
         children: [
           SingleChildScrollView(
             child: Column(
@@ -63,33 +72,90 @@ class _ChatPageRoomState extends State<ChatRoomPage> {
               ],
             ),
           ),
-          Row(
+          Expanded(
+              child: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: SizedBox(
-                  width: 330,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        prefixIcon: IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.add)),
-                        hintText: "Type here..",
-                        fillColor: const Color.fromARGB(255, 236, 236, 236),
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20)),
-                  ),
+              Container(
+                // messages container
+                width: size.width,
+                decoration: const BoxDecoration(
+                    color: Color.fromRGBO(239, 237, 247, 1),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(35))),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: ChatBubble(service: service, size: size),
                 ),
               ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.send))
+              Positioned(
+                  bottom: 10,
+                  left: 5,
+                  right: 5,
+                  child: Container(
+                    width: size.width * 0.9,
+                    height: size.height * 0.08,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  final pro =
+                                      Provider.of<ChatImageProviders>(context);
+                                  return ImageSelectorDialog(
+                                      pro: pro,
+                                      size: size,
+                                      recieverId:
+                                          widget.productModel.sellerUid!);
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.add)),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black, fontSize: 18),
+                              controller: messagecontroller,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  filled: true,
+                                  fillColor:
+                                      const Color.fromRGBO(239, 237, 247, 1)),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              sendMessage();
+                            },
+                            icon: const Icon(
+                              Icons.send_rounded,
+                              color: (Color(0xFF688a74)),
+                              size: 30,
+                            ))
+                      ],
+                    ),
+                  ))
             ],
-          )
+          )),
         ],
       ),
     );
+  }
+
+  sendMessage() async {
+    if (messagecontroller.text.isNotEmpty) {
+      await ChatService().sendMessage(
+          widget.productModel.sellerUid!, messagecontroller.text, 'text');
+      messagecontroller.clear();
+    }
   }
 }

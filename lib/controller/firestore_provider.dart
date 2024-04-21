@@ -13,6 +13,8 @@ class FirestoreProvider extends ChangeNotifier {
   List<ProductModel> userProductList = [];
   List<String> categoryList = [];
   List<ChatModel> messages = [];
+  ScrollController scrollController = ScrollController();
+
   String? selectedCategory;
   UserModel? currentUser;
   String searchQuery = '';
@@ -104,7 +106,7 @@ class FirestoreProvider extends ChangeNotifier {
       service.firestore
           .collection('user')
           .doc(service.auth.currentUser!.uid)
-          .collection('products')
+          .collection('product')
           .snapshots()
           .listen((product) {
         userProductList = product.docs
@@ -112,6 +114,7 @@ class FirestoreProvider extends ChangeNotifier {
             .toList();
         notifyListeners();
       });
+      print('user products $userProductList.');
       return userProductList;
     } catch (e) {
       throw Exception(e);
@@ -186,16 +189,23 @@ class FirestoreProvider extends ChangeNotifier {
     ids.sort();
     String chatroomid = ids.join('_');
     service.firestore
-        .collection('chat_room')
+        .collection('chats')
         .doc(chatroomid)
-        .collection('messages')
+        .collection('message')
         .orderBy("time", descending: false)
         .snapshots()
         .listen((message) {
       messages =
           message.docs.map((doc) => ChatModel.toJson(doc.data())).toList();
       notifyListeners();
+      scrollDown();
     });
     return messages;
   }
+
+  void scrollDown() => WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (scrollController.hasClients) {
+          scrollController.jumpTo(scrollController.position.maxScrollExtent);
+        }
+      });
 }

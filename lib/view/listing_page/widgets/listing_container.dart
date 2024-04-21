@@ -5,8 +5,20 @@ import 'package:market_place/controller/firestore_provider.dart';
 import 'package:market_place/model/product_model.dart';
 import 'package:provider/provider.dart';
 
-class ListingContainer extends StatelessWidget {
+class ListingContainer extends StatefulWidget {
   const ListingContainer({super.key});
+
+  @override
+  State<ListingContainer> createState() => _ListingContainerState();
+}
+
+class _ListingContainerState extends State<ListingContainer> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<FirestoreProvider>(context, listen: false).fetchUserProduct();
+  }
 
   @override
   Widget build(BuildContext context) {

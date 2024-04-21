@@ -16,7 +16,7 @@ class _ListingPageState extends State<ListingPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<FirestoreProvider>(context, listen: false).fetchFavoritItems();
+    Provider.of<FirestoreProvider>(context, listen: false).fetchUserProduct();
   }
 
   @override
